@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 namespace OOP2T
 {
 	internal class Program
-	{
+	{  
 		static void Main()
 		{
 			Plane plane1 = new(10000, 200,1243.5, 653.1, 1000000.5, 400, 2012);
