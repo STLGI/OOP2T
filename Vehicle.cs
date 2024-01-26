@@ -18,12 +18,15 @@ namespace OOP2T
 		double Price { get; set; }
 		int Speed { get; set; }
 		int YOI { get; set; }
+
+		string Name { get; set; }
 		void ShowInfo();
 	}
 	public abstract class Vehicle : IMovable
 	{
 		private double _x, _y, _price;
 		private int _speed, _yOI;
+		private string ?_name;
 
 		public double X { get; set; }
 		public double Y { get; set; }
@@ -34,19 +37,21 @@ namespace OOP2T
 				if (value < 0) throw new VehicleException("Скорость не может быть отрицательной!");
 				else _speed = value;  } }
 		public int YOI { get; set; }
+		public string Name { get; set; }
 
-		public Vehicle(double x, double y, double price, int speed, int yoI) { 
+		public Vehicle(double x, double y, double price, int speed, int yoI, string name) { 
 			X = x;
 			Y = y;
 			Price = price;
 			Speed = speed;
 			YOI = yoI;
+			Name = name;
 		}
 
 		public virtual void ShowInfo()
 		{
 			Console.WriteLine("Координата x: " + X + "\nКоордината y: " + Y + "\nЦена: " + Price + "\nСкорость: " + Speed +
-				"\nГод выпуска: " + YOI);
+				"\nГод выпуска: " + YOI + "\nНазвание: " + Name);
 		}
 
 	}
@@ -62,7 +67,7 @@ namespace OOP2T
 				if (value < 0) throw new VehicleException("Число пассажиров не может быть отрицательным!");
 				else _passengers = value;  } }
 		
-		public Plane(float height, int passengers, double x, double y, double price, int speed, int yOI) : base(x, y, price, speed, yOI)
+		public Plane(float height, int passengers, double x, double y, double price, int speed, int yOI, string name) : base(x, y, price, speed, yOI, name)
 		{
 			Height = height;
 			Passengers = passengers;
@@ -75,7 +80,9 @@ namespace OOP2T
 	}
 	public class Car : Vehicle
 	{
-		public Car(double x, double y, double price, int speed, int yOI):base(x, y, price, speed, yOI)
+		private static string ?name;
+
+		public Car(double x, double y, double price, int speed, int yOI, string name):base(x, y, price, speed, yOI, name)
 		{
 			
 		}
@@ -89,12 +96,13 @@ namespace OOP2T
 	{
 		private int _passengers; 
 		private string? _port;
+		private static string ?name;
 
 		public int Passengers { get { return _passengers; } set { 
 				if (value < 0) throw new VehicleException("Число пассажиров не может быть отрицательным!");
 				else _passengers = value;  } }
 		public string? Port { get; set; }
-		public Ship(int passengers, string? port, double x, double y, double price, int speed, int yOI) : base(x, y, price, speed, yOI)
+		public Ship(int passengers, string? port, double x, double y, double price, int speed, int yOI, string name) : base(x, y, price, speed, yOI, name)
 		{
 			Passengers = passengers;
 			Port = port;
