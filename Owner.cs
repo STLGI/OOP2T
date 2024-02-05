@@ -1,51 +1,87 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace OOP2T
 {
-	internal class Owner
+	internal class Owner<TVehicle> where TVehicle : Vehicle
 	{
-		private readonly List<Vehicle> garage = new();
+		private List<TVehicle> garage = new();
 
-		public Owner(List<Vehicle> garage) {
+		public Owner(List<TVehicle> garage) {
 			this.garage = garage;
 		}
 
-		public void AddVehicle(Vehicle vehicle)
+		public void AddVehicle(TVehicle vehicle)
 		{
 			garage.Add(vehicle);
 		}
-		public void ShowVehicles()
+
+		public List<TVehicle> GetGarage()
 		{
-			for(int i = 0; i < garage.Count; i++) {
-				if (garage[i] is Plane)
-				{
-					Console.WriteLine("Самолет \nВысота: " + ((Plane)garage[i]).Height + "\nПассажиры: " + ((Plane)garage[i]).Passengers +
-						"\nx: " + garage[i].X + "\ny:" + garage[i].Y + "\nЦена: " + garage[i].Price + "\nСкорость: " + garage[i].Speed +
-						"\nГод выпуска: " + garage[i].YOI
-						); 
-
-				}
-				if (garage[i] is Car)
-				{
-					Console.WriteLine("Машина \nx: " + garage[i].X + "\ny:" + garage[i].Y + "\nЦена: " + garage[i].Price + "\nСкорость: " + garage[i].Speed +
-						"\nГод выпуска: " + garage[i].YOI
-						);
-
-				}
-				if (garage[i] is Ship)
-				{
-					Console.WriteLine("Корабль \nПорт: " + ((Ship)garage[i]).Port + "\nПассажиры: " + ((Ship)garage[i]).Passengers +
-						"\nx: " + garage[i].X + "\ny:" + garage[i].Y + "\nЦена: " + garage[i].Price + "\nСкорость: " + garage[i].Speed +
-						"\nГод выпуска: " + garage[i].YOI
-						);
-
-				}
-			}
+			return garage;
 		}
 
+		public void ShowVehicles(List<Vehicle> garage)
+		{
+			for (int i = 0; i < garage.Count; i++) {
+				garage[i].ShowInfo();
+			}
+		}
+		public List<TVehicle> Filter(string fieldName, double value)
+		{
+
+			switch (fieldName)
+			{
+				case "Price":
+					return garage.Where(p => p.Price > value).ToList();
+				case "Speed":
+					return garage.Where(p => p.Speed > value).ToList();
+				case "YOI":
+					return garage.Where(p => p.YOI > value).ToList();
+				default:
+					Console.WriteLine("Введенный вами параметр не входит в список поддерживаемых данным методом.");
+					return garage;
+			}
+		}
+		public IEnumerable<IGrouping<int, TVehicle>> GroupByYear()
+		{
+			return garage.GroupBy(p => p.YOI);
+		}
+		public List<TVehicle> this[int startYear, int endYear]
+		{
+			get
+			{
+				return garage.Where(p => p.YOI <= endYear && p.YOI >= startYear).ToList();
+			}
+		}
+		}
+	internal class PlaneOwner<TVehicle> : Owner<TVehicle> where TVehicle : Plane
+	{
+		public PlaneOwner(List<TVehicle> garage) : base(garage)
+		{
+			
+		}
 	}
+
+	internal class CarOwner<TVehicle> : Owner<TVehicle> where TVehicle : Car
+	{
+		public CarOwner(List<TVehicle> garage) : base(garage)
+		{
+
+		}
+	}
+
+	internal class ShipOwner<TVehicle> : Owner<TVehicle> where TVehicle : Ship
+	{
+		public ShipOwner(List<TVehicle> garage) : base(garage)
+		{
+
+		}
+	}
+
 }
