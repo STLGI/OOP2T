@@ -7,21 +7,8 @@ using System.Threading.Tasks;
 
 namespace OOP2T
 {
-	class VehicleException : Exception
-	{
-		public VehicleException(string message) :base(message){ }
-	}
-	public interface IMovable
-	{
-		double X { get; set; }
-		double Y { get; set; }
-		double Price { get; set; }
-		int Speed { get; set; }
-		int YOI { get; set; }
 
-		string Name { get; set; }
-		void ShowInfo();
-	}
+
 	public abstract class Vehicle : IMovable
 	{
 		private double _x, _y, _price;
